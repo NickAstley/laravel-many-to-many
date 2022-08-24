@@ -21,7 +21,7 @@
                 <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
                     Utenti
                 </a>
-                <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
+                <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">
                     Post
                 </a>
             </div>

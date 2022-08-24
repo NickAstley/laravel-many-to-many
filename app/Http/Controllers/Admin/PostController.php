@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -52,7 +53,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create");
+        $tags = Tag::all(); 
+        return view("admin.posts.create", compact("tags"));
     }
 
     /**
@@ -65,7 +67,8 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             "title" => "required | min:10",
-            "content" => "required | min:10"
+            "content" => "required | min:10",
+            "tags" => "nullable | exists:tags,id"
         ]);
 
         $post = new Post();
@@ -76,6 +79,9 @@ class PostController extends Controller
 
         $post->save();
 
+        if(key_exists("tags", $validated)) {
+            $post->tags()->attach($validated["tags"]);
+        }
         return redirect()->route("admin.posts.show", $post->slug);
     }
 
@@ -100,7 +106,8 @@ class PostController extends Controller
     public function edit($slug)
     {
         $post = $this->findPostBySlug($slug);
-        return view("admin.posts.edit", compact("post"));
+        $tags = Tag::all();
+        return view("admin.posts.edit", compact("post", "tags"));
     }
 
     /**
@@ -114,13 +121,19 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             "title" => "required | min:10",
-            "content" => "required | min:10"
+            "content" => "required | min:10",
+            "tags" => "nullable | exists:tags,id"
         ]);
         $post = $this->findPostBySlug($slug);
         if($validated["title"] !== $post->title) {
             $post->slug = $this->generateSlug($validated["title"]);
         }
         $post->update($validated);
+        if(key_exists("tags", $validated)) {
+            $post->tags()->sync($validated["tags"]);
+        } else {
+            $post->tags()->sync([]);
+        }
         return redirect()->route("admin.posts.show", $post->slug);
     }
 
