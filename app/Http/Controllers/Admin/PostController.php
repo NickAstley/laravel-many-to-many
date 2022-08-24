@@ -146,6 +146,7 @@ class PostController extends Controller
     public function destroy($slug)
     {
         $post = $this->findPostBySlug($slug);
+        $post->tags()->detach();
         $post->delete();
         return redirect()->route("admin.posts.index");
     }
