@@ -40,28 +40,28 @@
                 </div>
                 <div class="form-group">
                     <label>Indirizzo</label>
-                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="Inserisci l'indirizzo" value="{{ old('address'), $user->userDetail->address }}">
+                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="Inserisci l'indirizzo" value="{{ old('address', $user->userDetail->address) }}">
                     @error('address')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Città</label>
-                    <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" placeholder="Inserisci la città" value="{{ old('city'), $user->userDetail->city }}">
+                    <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" placeholder="Inserisci la città" value="{{ old('city', $user->userDetail->city) }}">
                     @error('city')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Provincia</label>
-                    <input type="text" name="province" class="form-control @error('province') is-invalid @enderror" placeholder="Inserisci la provincia" value="{{ old('province'), $user->userDetail->province }}">
+                    <input type="text" name="province" class="form-control @error('province') is-invalid @enderror" placeholder="Inserisci la provincia" value="{{ old('province', $user->userDetail->province) }}">
                     @error('province')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Numero di telefono</label>
-                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Inserisci il numero di telefono" value="{{ old('phone'), $user->userDetail->phone }}">
+                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Inserisci il numero di telefono" value="{{ old('phone', $user->userDetail->phone) }}">
                     @error('phone')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
