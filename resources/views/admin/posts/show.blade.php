@@ -21,6 +21,8 @@
                     <dd>{{ $post->user->name }}</dd>
                     <dt>Tags</dt>
                     <dd>{{ $post->tags->implode("name"," - ") }}</dd>
+                    <dt>Immagine di copertina</dt>
+                    <img src="{{ asset("storage/" .  $post->cover_img) }}" alt="">
                 </dl>
                 <a href="{{ route('admin.posts.edit', ['post' => $post->slug]) }}"
                    class="btn btn-warning">

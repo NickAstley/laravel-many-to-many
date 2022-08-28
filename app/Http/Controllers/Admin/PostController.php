@@ -128,6 +128,14 @@ class PostController extends Controller
         ]);
         $post = $this->findPostBySlug($slug);
 
+        if(key_exists("cover_img", $validated)) {
+            if($post->cover_img) {
+                Storage::delete($post->cover_img);
+            }
+            $coverImg = Storage::put("/uploads", $validated["cover_img"]);
+            $post->cover_img = $coverImg;
+        }
+
         if($validated["title"] !== $post->title) {
             $post->slug = $this->generateSlug($validated["title"]);
         }
@@ -137,11 +145,6 @@ class PostController extends Controller
             $post->tags()->sync($validated["tags"]);
         } else {
             $post->tags()->sync([]);
-        }
-
-        if(key_exists("cover_img", $validated)) {
-            $cover_img = Storage::put("/uploads", $validated["cover_img"]);
-            $post->cover_img = $cover_img;
         }
 
         return redirect()->route("admin.posts.show", $post->slug);
