@@ -7,6 +7,7 @@ use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -122,18 +123,27 @@ class PostController extends Controller
         $validated = $request->validate([
             "title" => "required | min:10",
             "content" => "required | min:10",
-            "tags" => "nullable | exists:tags,id"
+            "tags" => "nullable | exists:tags,id",
+            "cover_img" => "nullable | image"
         ]);
         $post = $this->findPostBySlug($slug);
+
         if($validated["title"] !== $post->title) {
             $post->slug = $this->generateSlug($validated["title"]);
         }
         $post->update($validated);
+
         if(key_exists("tags", $validated)) {
             $post->tags()->sync($validated["tags"]);
         } else {
             $post->tags()->sync([]);
         }
+
+        if(key_exists("cover_img", $validated)) {
+            $cover_img = Storage::put("/uploads", $validated["cover_img"]);
+            $post->cover_img = $cover_img;
+        }
+
         return redirect()->route("admin.posts.show", $post->slug);
     }
 
